@@ -8,10 +8,10 @@ body {
     background-image: url('fondo.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center; /* Asegura que la imagen esté centrada */
+    background-position: center center; 
     margin: 0;
-    height: 100vh; /* Ajusta la altura del body al 100% del viewport height */
-    display: flex; /* Usa flexbox para centrar el contenido verticalmente */
+    height: 100vh; 
+    display: flex; 
     align-items: center;
     justify-content: center;
 }
@@ -139,7 +139,6 @@ button:hover {
     border: 1px solid #0070cc;
 }
 
-/* Resto de estilos */
 
 #icono-maquina,
 #icono-kp {
@@ -148,7 +147,7 @@ button:hover {
 }
 
 #icono-maquina {
-    top: -15px;
+    top: 10px;
     right: 10px;
     width: 100px;
     height: auto;
@@ -168,6 +167,22 @@ button:hover {
     color: #ffffff;
     font-size: 28px;
     font-weight: bold;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 25%; 
+    transform: translateY(-50%);
+    right: 10px; 
+    cursor: pointer;
 }
 
 /* Estilos responsivos */

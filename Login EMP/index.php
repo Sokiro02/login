@@ -79,6 +79,7 @@ $sistemaoperativo = getPlatform($user_agent);
     <title>SAECO</title>
     <meta name="description" content="User login page" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
@@ -122,7 +123,7 @@ $sistemaoperativo = getPlatform($user_agent);
     }
     ?>
     <img id="icono-maquina" src="maquina.png" alt="Icono de Máquina">
-	<img id="icono-kp" src="kp.PNG" alt="Icono de Kpisoft">
+    <img id="icono-kp" src="kp.PNG" alt="Icono de Kpisoft">
     <div id="info-saeco">
         <p>Saeco EMP</p>
     </div>
@@ -145,10 +146,17 @@ $sistemaoperativo = getPlatform($user_agent);
             <input type="text" placeholder="Ingrese el usuario" name="txtNombre" id="username" class="input-field" required>
             <div id="usernameError" class="error-message"></div>
 
-            <label for="password">Contraseña</label>
-            <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
+            <div class="password-container">
+                <label for="password">Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
+                    <div id="showPasswordToggle" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
             <div id="passwordError" class="error-message"></div>
-
+            <div id="passwordError" class="error-message"></div>
             <button type="submit">Ingresar</button>
             <br>
             <br>
@@ -230,6 +238,18 @@ $sistemaoperativo = getPlatform($user_agent);
             // Muestra el formulario de inicio de sesión
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('forgotForm').style.display = 'none';
+        }
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye-slash"></i>'; // Cambia el ícono a un ojo tachado
+            } else {
+                passwordInput.type = 'password';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye"></i>'; // Cambia el ícono a un ojo normal
+            }
         }
     </script>
 </body>
