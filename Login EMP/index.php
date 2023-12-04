@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+// Función para obtener la dirección IP real del usuario
 function getRealIP()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -11,16 +12,17 @@ function getRealIP()
     return $_SERVER['REMOTE_ADDR'];
 }
 
+// Obtiene la cadena del agente de usuario del navegador
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
+// Función para obtener el navegador del usuario
 function getBrowser($user_agent)
 {
-
     if (strpos($user_agent, 'MSIE') !== FALSE)
         return 'Internet Explorer';
-    elseif (strpos($user_agent, 'Edge') !== FALSE) //Microsoft Edge
+    elseif (strpos($user_agent, 'Edge') !== FALSE)
         return 'Microsoft Edge';
-    elseif (strpos($user_agent, 'Trident') !== FALSE) //IE 11
+    elseif (strpos($user_agent, 'Trident') !== FALSE)
         return 'Internet Explorer';
     elseif (strpos($user_agent, 'Opera Mini') !== FALSE)
         return "Opera Mini";
@@ -36,6 +38,7 @@ function getBrowser($user_agent)
         return 'No hemos podido detectar su navegador';
 }
 
+// Función para obtener la plataforma del usuario
 function getPlatform($user_agent)
 {
     $plataformas = array(
@@ -62,12 +65,28 @@ function getPlatform($user_agent)
     return 'Otras';
 }
 
-// Validación del IP del visitante
+// Obtiene la IP real y la información del navegador y sistema operativo
 $miip = getRealIP();
-// Validación del Navegador
 $navegador = getBrowser($user_agent);
-// Sistema Operativo
 $sistemaoperativo = getPlatform($user_agent);
+
+// Comprueba si hay mensajes de error en la URL
+if (isset($_GET['Mensaje'])) {
+    $codigoMensaje = $_GET['Mensaje'];
+    switch ($codigoMensaje) {
+        case 12:
+            $mensaje = "Por favor, ingrese nombre de usuario y contraseña.";
+            break;
+        case 14:
+            $mensaje = "Contraseña incorrecta o usuario desactivado.";
+            break;
+        case 15:
+            $mensaje = isset($_GET['error']) ? $_GET['error'] : "ERROR! Usuario no registrado";
+            break;
+        default:
+            $mensaje = "";
+    }
+}
 ?>
 
 <html lang="en">
@@ -75,39 +94,22 @@ $sistemaoperativo = getPlatform($user_agent);
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <!-- Design by foolishdeveloper.com -->
     <title>SAECO</title>
     <meta name="description" content="User login page" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <!--Stylesheet-->
     <link rel="stylesheet" href="styles.css">
 
-    <!--/Inicio Alertas-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link href="../assets/css/sweetalert.css" rel="stylesheet">
-    <!-- Custom functions file -->
     <script src="../assets/js/functions.js"></script>
-    <!-- Sweet Alert Script -->
     <script src="../assets/js/sweetalert.min.js"></script>
-    <!--/Fin Alertas-->
 
     <link rel="apple-touch-icon" sizes="57x57" href="Favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="Favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="Favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="Favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="Favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="Favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="Favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="Favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="Favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="Favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="Favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="Favicon/favicon-16x16.png">
+    <!-- ... (otros tamaños de ícono) ... -->
     <link rel="manifest" href="Favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="Favicon/ms-icon-144x144.png">
@@ -115,54 +117,47 @@ $sistemaoperativo = getPlatform($user_agent);
 </head>
 
 <body>
-    <?php
-    // Verificar si hay un mensaje de error en el URL
-    if (isset($_GET['error'])) {
-        $mensajeError = $_GET['error'];
-        echo '<div class="error-message">' . htmlspecialchars($mensajeError) . '</div>';
-    }
-    ?>
     <img id="icono-maquina" src="maquina.png" alt="Icono de Máquina">
     <img id="icono-kp" src="kp.PNG" alt="Icono de Kpisoft">
     <div id="info-saeco">
         <p>Saeco EMP</p>
     </div>
+
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
+
     <div class="formContainer" id="formContainer">
         <form id="loginForm" class="form" method="post" action="login.php" onsubmit="return validateInputs()">
             <input type="hidden" name="miip" value="<?php echo $miip; ?>">
             <input type="hidden" name="sistemaoperativo" value="<?php echo $sistemaoperativo; ?>">
             <input type="hidden" name="navegador" value="<?php echo $navegador; ?>">
-
+            
             <h3>Login Saeco</h3>
 
-            <!-- Agrega esta sección al formulario -->
             <div id="generalError" class="error-message"></div>
 
             <label for="username">Nombre de usuario</label>
             <input type="text" placeholder="Ingrese el usuario" name="txtNombre" id="username" class="input-field" required>
             <div id="usernameError" class="error-message"></div>
 
-            <div class="password-container">
-                <label for="password">Contraseña</label>
-                <div class="password-input-container">
-                    <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
-                    <div id="showPasswordToggle" class="password-toggle" onclick="togglePasswordVisibility()">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                </div>
-            </div>
+            <label for="password">Contraseña</label>
+            <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
             <div id="passwordError" class="error-message"></div>
-            <div id="passwordError" class="error-message"></div>
+
             <button type="submit">Ingresar</button>
             <br>
             <br>
             <br>
             <p id="forgotLink" onclick="showForgotForm()" class="link">Olvidé mi contraseña</p>
             <a id="manualLink" href="https://transbaruc.com/sofia/Login/manuales/" target="_blank" class="link">Manual de uso</a>
+            <?php
+            // Mostrar mensaje de error si está presente
+            if (!empty($mensaje)) {
+                echo '<div class="error-messageR">' . htmlspecialchars($mensaje) . '</div>';
+            }
+            ?>
         </form>
 
         <form id="forgotForm" class="form" method="post" action="login.php" style="display: none;">
@@ -203,7 +198,7 @@ $sistemaoperativo = getPlatform($user_agent);
             const passwordInput = document.getElementById('password');
             const usernameError = document.getElementById('usernameError');
             const passwordError = document.getElementById('passwordError');
-            const invalidChars = /["'=]/; // Modificado para incluir =, comillas simples y comillas dobles
+            const invalidChars = /["'=/()]/; // Modificado para incluir =, comillas simples y comillas dobles
 
             // Validación del nombre de usuario
             if (invalidChars.test(usernameInput.value)) {
@@ -239,18 +234,10 @@ $sistemaoperativo = getPlatform($user_agent);
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('forgotForm').style.display = 'none';
         }
-
-        function togglePasswordVisibility() {
-            var passwordInput = document.getElementById('password');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye-slash"></i>'; // Cambia el ícono a un ojo tachado
-            } else {
-                passwordInput.type = 'password';
-                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye"></i>'; // Cambia el ícono a un ojo normal
-            }
-        }
+        window.onload = function () {
+            // Mostrar el mensaje de error si está presente al cargar la página
+            showLoginForm();
+        };
     </script>
 </body>
 
