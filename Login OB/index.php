@@ -155,11 +155,15 @@ if (isset($_GET['Mensaje'])) {
             <label for="username">Nombre de usuario</label>
             <input type="text" placeholder="Ingrese el usuario" name="txtNombre" id="username" class="input-field" required>
             <div id="usernameError" class="error-message"></div>
-
-            <label for="password">Contraseña</label>
-            <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
-            <div id="passwordError" class="error-message"></div>
-
+            <div class="password-container">
+                <label for="password">Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
+                    <div id="showPasswordToggle" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
             <button type="submit">Ingresar</button>
             <br>
             <br>
@@ -252,6 +256,18 @@ if (isset($_GET['Mensaje'])) {
             // Mostrar el mensaje de error si está presente al cargar la página
             showLoginForm();
         };
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye-slash"></i>'; // Cambia el ícono a un ojo tachado
+            } else {
+                passwordInput.type = 'password';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye"></i>'; // Cambia el ícono a un ojo normal
+            }
+        }
     </script>
 </body>
 

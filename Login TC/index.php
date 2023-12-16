@@ -147,7 +147,7 @@ if (isset($_GET['Mensaje'])) {
             <input type="hidden" name="miip" value="<?php echo $miip; ?>">
             <input type="hidden" name="sistemaoperativo" value="<?php echo $sistemaoperativo; ?>">
             <input type="hidden" name="navegador" value="<?php echo $navegador; ?>">
-            
+
             <h3>Login Saeco</h3>
 
             <div id="generalError" class="error-message"></div>
@@ -156,10 +156,16 @@ if (isset($_GET['Mensaje'])) {
             <input type="text" placeholder="Ingrese el usuario" name="txtNombre" id="username" class="input-field" required>
             <div id="usernameError" class="error-message"></div>
 
-            <label for="password">Contraseña</label>
-            <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
+            <div class="password-container">
+                <label for="password">Contraseña</label>
+                <div class="password-input-container">
+                    <input type="password" placeholder="Ingrese la contraseña" name="TxtPass" id="password" class="input-field" required>
+                    <div id="showPasswordToggle" class="password-toggle" onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                </div>
+            </div>
             <div id="passwordError" class="error-message"></div>
-
             <button type="submit">Ingresar</button>
             <br>
             <br>
@@ -248,10 +254,22 @@ if (isset($_GET['Mensaje'])) {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('forgotForm').style.display = 'none';
         }
-        window.onload = function () {
+        window.onload = function() {
             // Mostrar el mensaje de error si está presente al cargar la página
             showLoginForm();
         };
+
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('password');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye-slash"></i>'; // Cambia el ícono a un ojo tachado
+            } else {
+                passwordInput.type = 'password';
+                document.getElementById('showPasswordToggle').innerHTML = '<i class="fas fa-eye"></i>'; // Cambia el ícono a un ojo normal
+            }
+        }
     </script>
 </body>
 
